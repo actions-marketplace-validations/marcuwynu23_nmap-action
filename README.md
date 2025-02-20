@@ -20,10 +20,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Install Nmap
+        run: sudo apt-get update && sudo apt-get install -y nmap
+
       - name: Run Nmap Scan
-        uses: ./ # Run local action
+        uses: marcuwynu23/nmap-action@v1.0.0
         with:
-          target: "example.com"
+          target: "cloudmateria.com"
           issue_title: "🚨 Nmap Security Scan Alert"
           fail_action: "true"
           allow_issue_writing: "true"

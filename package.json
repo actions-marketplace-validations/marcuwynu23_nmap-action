@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "```yml\r name: Nmap Scan",
   "dependencies": {
-    "@actions/core": "^1.11.1"
+    "@actions/core": "^1.11.1",
+    "libnmap": "^0.4.19"
   }
 }
