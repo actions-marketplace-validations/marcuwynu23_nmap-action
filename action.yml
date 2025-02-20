@@ -1,16 +1,32 @@
 name: "Nmap Scan Action"
-description: "Runs an Nmap scan on a specified domain"
+description: "Runs an Nmap scan on a specified domain and creates an issue if vulnerabilities are found"
 author: "Mark Wayne Menorca"
+
 inputs:
   target:
     description: "The domain to scan with Nmap"
     required: true
+  issue_title:
+    description: "The title for the GitHub issue to be created"
+    required: false
+    default: "Nmap Security Scan Report"
+  fail_action:
+    description: "The action will fail if vulnerabilities are detected"
+    required: false
+    default: "false"
+  allow_issue_writing:
+    description: "If enabled, the action will create an issue with the scan results"
+    required: false
+    default: "true"
+
 outputs:
   scan_result:
     description: "The output of the Nmap scan"
+
 runs:
   using: "node16"
   main: "dist/index.js"
+
 branding:
   icon: "activity"
   color: "blue"

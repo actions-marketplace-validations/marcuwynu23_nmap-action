@@ -1,29 +1,30 @@
-
 #### How to use:
 
 ```yml
-name: Nmap Scan
+name: "Run Nmap Scan"
 
 on:
-  workflow_dispatch:
-    inputs:
-      target:
-        description: "Domain to scan"
-        required: true
-        default: "example.com"
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  issues: write # ✅ Required for issue creation
 
 jobs:
-  scan:
+  nmap_scan:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Run Nmap Scan
-        uses: your-username/nmap-action@main
+        uses: ./ # Run local action
         with:
-          target: ${{ github.event.inputs.target }}
-
-      - name: Display Scan Output
-        run: echo "${{ steps.nmap.outputs.scan_result }}"
+          target: "example.com"
+          issue_title: "🚨 Nmap Security Scan Alert"
+          fail_action: "true"
+          allow_issue_writing: "true"
 ```

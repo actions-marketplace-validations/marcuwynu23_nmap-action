@@ -1,32 +1,59 @@
+const { exec } = require("child_process");
 const core = require("@actions/core");
-const exec = require("child_process").exec;
+const github = require("@actions/github");
 
 async function run() {
   try {
     const target = core.getInput("target");
+    const issueTitle = core.getInput("issue_title");
+    const failAction = core.getInput("fail_action") === "true";
+    const allowIssueWriting = core.getInput("allow_issue_writing") === "true";
 
-    if (!target) {
-      core.setFailed("No target domain provided.");
-      return;
-    }
+    console.log(`🔍 Running Nmap scan on: ${target}`);
 
-    console.log(`Scanning target: ${target}`);
-    
-    exec(`nmap ${target} -A`, (error, stdout, stderr) => {
+    exec(`nmap ${target} -A`, async (error, stdout, stderr) => {
       if (error) {
-        core.setFailed(`Error running Nmap: ${error.message}`);
+        core.setFailed(`❌ Nmap scan failed: ${error.message}`);
         return;
       }
+
       if (stderr) {
-        console.error(`Nmap stderr: ${stderr}`);
+        console.warn(`⚠️ Nmap warnings: ${stderr}`);
       }
 
-      console.log(`Nmap Scan Results:\n${stdout}`);
-      core.setOutput("scan_result", stdout);
-    });
+      const scanResult = stdout;
+      console.log("✅ Scan completed. Results:");
+      console.log(scanResult);
 
+      core.setOutput("scan_result", scanResult);
+
+      // Check for vulnerabilities or open ports
+      const vulnerabilitiesDetected = /open|vulnerable|CVE/i.test(scanResult);
+
+      if (vulnerabilitiesDetected && allowIssueWriting) {
+        console.log("🚨 Vulnerabilities detected! Creating GitHub Issue...");
+
+        const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+        const { owner, repo } = github.context.repo;
+
+        await octokit.rest.issues.create({
+          owner,
+          repo,
+          title: issueTitle,
+          body: `### 📌 Nmap Scan Results for **${target}**\n\`\`\`\n${scanResult}\n\`\`\`\n⚠️ **Potential vulnerabilities detected!**`,
+        });
+
+        console.log("✅ GitHub Issue created successfully.");
+      } else {
+        console.log("🛡️ No vulnerabilities detected. No issue created.");
+      }
+
+      if (vulnerabilitiesDetected && failAction) {
+        core.setFailed("❌ Vulnerabilities detected. Failing the action.");
+      }
+    });
   } catch (error) {
-    core.setFailed(`Action failed: ${error.message}`);
+    core.setFailed(`❌ Error: ${error.message}`);
   }
 }
 
