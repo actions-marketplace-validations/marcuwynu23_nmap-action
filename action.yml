@@ -1,0 +1,16 @@
+name: "Nmap Scan Action"
+description: "Runs an Nmap scan on a specified domain"
+author: "Mark Wayne Menorca"
+inputs:
+  target:
+    description: "The domain to scan with Nmap"
+    required: true
+outputs:
+  scan_result:
+    description: "The output of the Nmap scan"
+runs:
+  using: "node16"
+  main: "dist/index.js"
+branding:
+  icon: "activity"
+  color: "blue"

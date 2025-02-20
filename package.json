@@ -1,0 +1,15 @@
+{
+  "name": "nmap-action",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "```yml\r name: Nmap Scan",
+  "dependencies": {
+    "@actions/core": "^1.11.1"
+  }
+}
