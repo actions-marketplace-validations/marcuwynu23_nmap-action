@@ -26,7 +26,7 @@ jobs:
       - name: Run Nmap Scan
         uses: marcuwynu23/nmap-action@v1.0.0
         with:
-          target: "cloudmateria.com"
+          target: "example.com"
           issue_title: "🚨 Nmap Security Scan Alert"
           fail_action: "true"
           allow_issue_writing: "true"
