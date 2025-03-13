@@ -7,11 +7,11 @@ Thank you for your interest in contributing to our project! We welcome your cont
 ### Reporting Bugs
 
 - **Before Reporting:**
-  - Please check the [issues list](https://github.com/your-repo/issues) to see if the bug has already been reported.
+  - Please check the [issues list](https://github.com/marcuwynu23/nmap-action/issues) to see if the bug has already been reported.
 - **Bug Report Template:**
   - Provide a clear title and description.
   - Include steps to reproduce the bug.
-  - Mention your operating system, Node.js/npm versions, and any relevant configuration details.
+  - Mention your operating system, language runtime versions, and any relevant configuration details.
   - Attach logs or screenshots if applicable.
 
 ### Suggesting Enhancements
